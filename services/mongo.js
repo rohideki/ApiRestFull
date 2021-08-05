@@ -29,7 +29,7 @@ main()
 
 
 
-module.exports = async function insertMany(data){
+async function insertMany(data){
    
 const conn = await main()
 const url = 'mongodb://localhost:27017'
@@ -46,7 +46,7 @@ const collection = db.collection('usuarios')
   //console.log('Inserted documents =>', insertResult)
   return insertResult
 }
-
+module.exports = {insertMany}
 
 // module.exports = async function insertErr(data){
    

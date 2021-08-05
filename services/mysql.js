@@ -10,7 +10,7 @@ async function connect(){
 }
 
 connect()
-module.exports = async function selectCustomers(data){
+async function selectCustomers(data){
   
   const conn = await connect();
   const [rows] = await conn.query(`SELECT * FROM users WHERE ID = ${data};`);
@@ -18,7 +18,7 @@ module.exports = async function selectCustomers(data){
   return rows;
 }
 
-
+module.exports = {selectCustomers}
 // module.exports = async function insertCustomers(data){
   
 //   const conn = await connect();
