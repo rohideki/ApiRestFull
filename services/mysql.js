@@ -1,3 +1,4 @@
+
 async function connect(){
     if(global.connection && global.connection.state !== 'disconnected')
         return global.connection;
@@ -11,13 +12,13 @@ async function connect(){
 
 connect()
 module.exports.selectCustomers =async (data) =>{
- console.log(data)
+  
   const conn = await connect();
-  const [rows] = await conn.query(`SELECT * FROM users WHERE ID = '${data}';`);
+  const [rows] = await conn.query(`SELECT * FROM users WHERE EMAIL = '${data}';`);
  
   return rows;
 }
-module.exports.insertCustomers = async (data,id)=>{
+module.exports.insertCustomers = async (data,id,hash)=>{
   
   const conn = await connect();
   let [rows] = await conn.query(`SELECT * FROM users WHERE EMAIL='${data.email}'`);
@@ -25,7 +26,7 @@ module.exports.insertCustomers = async (data,id)=>{
   if(rows != ''){
 return 'User is already!!'
   }
-  [rows] = await conn.query(`INSERT INTO users (id,name,email,password) values('${id}','${data.name}','${data.email}', '${data.password}')`);
+  [rows] = await conn.query(`INSERT INTO users (id,name,email,password) values('${id}','${data.name}','${data.email}', '${hash}')`);
   
   if(!rows) throw err
  
