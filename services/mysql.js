@@ -10,20 +10,29 @@ async function connect(){
 }
 
 connect()
-async function selectCustomers(data){
+module.exports.selectCustomers =async (data) =>{
+ console.log(data)
+  const conn = await connect();
+  const [rows] = await conn.query(`SELECT * FROM users WHERE ID = '${data}';`);
+ 
+  return rows;
+}
+module.exports.insertCustomers = async (data,id)=>{
   
   const conn = await connect();
-  const [rows] = await conn.query(`SELECT * FROM users WHERE ID = ${data};`);
+  let [rows] = await conn.query(`SELECT * FROM users WHERE EMAIL='${data.email}'`);
+
+  if(rows != ''){
+return 'User is already!!'
+  }
+  [rows] = await conn.query(`INSERT INTO users (id,name,email,password) values('${id}','${data.name}','${data.email}', '${data.password}')`);
+  
+  if(!rows) throw err
+ 
   
   return rows;
 }
 
-module.exports = {selectCustomers}
-// module.exports = async function insertCustomers(data){
-  
-//   const conn = await connect();
-//   const [rows] = await conn.query(`INSERT INTO users ('name','email','password') values(${data.name},${data.email}, ${data.password})`);
-  
-//   return rows;
-// }
+
+
 

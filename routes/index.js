@@ -1,24 +1,11 @@
-const express = require('express');
-const controle = require('../controllers')
-const router = express.Router()
+const router = require('express').Router()
+const routes = require('./index2')
+const error = require('../middlewares/error')
 
-module.exports.Get = router.get('/', async (request, response) => {
-    let body = request.body
-    let resposta = await controle.ControlGet(body)
-    //console.log(resposta)
-    response.status(200).json({
-        result: resposta
-    })
-})
-
-// module.exports.Post = router.post('/', async (request, response) => {
-//     let body = request.body
-//     let resposta = await controle.ControlGet(body)
-//     //console.log(resposta)
-//     response.status(201).json({
-//         result: resposta
-//     })
-// })
+module.exports = function (router, app) {
+    router.use('/', error,routes.Get)
+    router.use('/', error,routes.Post)
 
 
+}
 

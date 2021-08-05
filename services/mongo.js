@@ -29,7 +29,7 @@ main()
 
 
 
-async function insertMany(data){
+module.exports.insertMany = async (data)=>{
    
 const conn = await main()
 const url = 'mongodb://localhost:27017'
@@ -46,22 +46,23 @@ const collection = db.collection('usuarios')
   //console.log('Inserted documents =>', insertResult)
   return insertResult
 }
-module.exports = {insertMany}
 
-// module.exports = async function insertErr(data){
+
+module.exports.insertErr = async (data) =>{
    
-// const conn = await main()
-// const url = 'mongodb://localhost:27017'
-// const client = new MongoClient(url)
+const conn = await main()
+const url = 'mongodb://localhost:27017'
+const client = new MongoClient(url)
 
-// // Database Name
-// const dbName = 'admin'
-// await client.connect()
-//     const db = client.db(dbName)
-// const collection = db.collection('err')
+// Database Name
+const dbName = 'admin'
+await client.connect()
+    const db = client.db(dbName)
+const collection = db.collection('err')
     
-//   // the following code examples can be pasted here...
-//   const insertResult = await collection.insertMany( [{data}] )
-//   //console.log('Inserted documents =>', insertResult)
-//   return insertResult
-// }
+  // the following code examples can be pasted here...
+  const insertResult = await collection.insertMany( [{data}] )
+  //console.log('Inserted documents =>', insertResult)
+  return insertResult
+}
+
