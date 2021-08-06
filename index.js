@@ -21,7 +21,8 @@ app
 app.use('/api', router)
 require(__dirname + '/routes/index.js')(router, app)
 
-
+// app.use('/login', router)
+// require(__dirname + '/middlewares/auth.js')(router, app)
 
 app.listen(3030, ()=>{
     console.log('Server is running')
