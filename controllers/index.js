@@ -20,6 +20,7 @@ module.exports.ControlGet = async (data) => {
 };
 
 module.exports.ControlPost = async (data) => {
+    
     let id = await uuidv4()
     const saltRounds = 10;
     try {
@@ -27,13 +28,44 @@ module.exports.ControlPost = async (data) => {
         const hash = bcrypt.hashSync(password, saltRounds);
 
         const clientes = await mysql.insertCustomers(data, id, hash)
+        
         return clientes
     }
+    catch (err) {
+        console.log(err)
+        let insertMongo = await mongo.insertErr(err)
+        return insertMongo
+    }
+}
+
+module.exports.ControlPut = async (data) => {
+  
+    const saltRounds = 10;
+    try {
+        const { password, email,newPassword } = data
+       
+        const consulta = await mysql.selectCustomers(email);
+  
+        if(consulta == ''){
+            return 'Email not found'
+        }
+        const newHash = bcrypt.hashSync(newPassword, saltRounds);
+      
+        
+        const hash = bcrypt.compareSync(password, consulta[0].password);
+      
+        if(hash == true){
+            const clientes = await mysql.updateCustomers(data,newHash)
+            if(clientes != '') return 'Password updated'
+    }
+    return 'Invalid password!!'
+}
     catch (err) {
         let insertMongo = await mongo.insertErr(err)
         return insertMongo
     }
 }
+
 
 module.exports.ControlLogin = async (data) => {
     const { password, user } = data

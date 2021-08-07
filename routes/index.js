@@ -5,6 +5,7 @@ const error = require('../middlewares/error')
 module.exports = function (router, app) {
     router.use('/', error,routes.Get)
     router.use('/', error,routes.Post)
+    router.use('/', error,routes.Put)
     router.use('/', error,routes.Login)
 
 

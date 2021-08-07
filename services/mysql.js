@@ -13,19 +13,64 @@
 module.exports ={
 selectCustomers: async (data) =>{
   const conn = await connect();
-  const [rows] = await conn.query(`SELECT * FROM users WHERE EMAIL = '${data}';`);
+  let sql = `SELECT * FROM users WHERE EMAIL = '${data}';`
+  const [rows] = await conn.query(sql);
+
   return rows;
 },
 
 insertCustomers: async (data,id,hash)=>{  
+
   const conn = await connect();
-  let [rows] = await conn.query(`SELECT * FROM users WHERE EMAIL='${data.email}'`);
+  let sql = `SELECT * FROM users WHERE EMAIL='${data.email}'`
+  let sqlIns = `INSERT INTO users (id,name,email,password) values('${id}','${data.name}','${data.email}', '${hash}')`
+  let [rows] = await conn.query(sql);
+
   if(rows != ''){
 return 'User is already!!'
   }
-  [rows] = await conn.query(`INSERT INTO users (id,name,email,password) values('${id}','${data.name}','${data.email}', '${hash}')`);
+  
+  [rows] = await conn.query(sqlIns);
+
   if(!rows) throw err
   return rows;
+},
+
+updateCustomers: async (data,newHash)=>{  
+  const conn = await connect();
+
+    let sqlUp=`UPDATE users SET `
+    if(data.name){
+      let name = `name='${data.name}',`
+    sqlUp += name
+    }
+    else{
+    return "Name not found"
+    }
+    if(data.email){
+        let email = `email='${data.email}',`
+      sqlUp += email
+    }
+    else{
+        return "Email not found"
+    }
+    if(newHash){
+        let password = `password='${newHash}' `
+     sqlUp += password
+    }
+    else{
+        return "Password not found"
+    }
+    
+    sqlUp += `WHERE email='${data.email}'`
+  
+    let [rows] = await conn.query(sqlUp);
+    if(rows == ''){
+      throw err
+    }
+
+    return rows
+  
 }
 }
 
