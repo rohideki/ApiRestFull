@@ -34,6 +34,21 @@ module.exports.Put = router.put('/', async (request, response,next) => {
     return "User not found"
 })
 
+module.exports.Delete = router.delete('/', async (request, response,next) => {
+    let body = request.body    
+  
+    let busca = await controle.ControlDelete(body)  
+    if(busca != ""){
+        
+        response.status(200).json({
+            result: busca     
+    }) 
+    
+       
+    }
+    return "User not found"
+})
+
  module.exports.Login = router.post('/login', async (request, response, next) => {
     let body = request.body
    let retorno = await controle.ControlLogin(body)    

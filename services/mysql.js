@@ -71,6 +71,18 @@ updateCustomers: async (data,newHash)=>{
 
     return rows
   
-}
+},
+
+deleteCustomers: async (data)=>{  
+
+  const conn = await connect();
+
+  let sqlDel = `DELETE FROM users WHERE email = '${data.email}'`
+  
+  let [rows] = await conn.query(sqlDel);
+  
+    if(!rows) throw err
+  return {results: 'User deleted' + rows};
+},
 }
 

@@ -66,6 +66,35 @@ module.exports.ControlPut = async (data) => {
     }
 }
 
+module.exports.ControlDelete = async (data) => {
+  
+    const saltRounds = 10;
+    try {
+        const { password, email } = data
+        
+        const consulta = await mysql.selectCustomers(email);
+  
+        if(consulta == ''){
+            return 'Email not found'
+        }
+                
+        const hash = bcrypt.compareSync(password, consulta[0].password);
+      
+        if(hash == true){
+            const clientes = await mysql.deleteCustomers(data)
+
+            let insertMongo = await mongo.userDeleted(consulta)
+       
+            if(clientes != '') return 'User deleted!!'
+    }
+    return 'Invalid password!!'
+}
+    catch (err) {
+        console.log(err)
+        let insertMongo = await mongo.insertErr(err)
+        return insertMongo
+    }
+}
 
 module.exports.ControlLogin = async (data) => {
     const { password, user } = data
