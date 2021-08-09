@@ -3,17 +3,6 @@ const controle = require('../controllers')
 const router = express.Router()
 const jwt = require('jsonwebtoken');
 
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-	
 function verifyJWT(req, res, next){
     const token = req.headers['x-access-token'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
