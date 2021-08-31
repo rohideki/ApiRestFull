@@ -16,4 +16,4 @@ decoded: function(data){
     return text
 }
 
-}
+};
